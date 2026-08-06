@@ -1,9 +1,5 @@
-// Business logic for tasks: listing with filters, creating, and updating.
-
 const { query } = require('../db/index');
 
-// GET /api/projects/:id/tasks — supports ?status= ?priority= ?assignedTo= ?search=
-// Filters are added dynamically so we only touch the columns the caller asked about.
 async function getTasksForProject(projectId, filters = {}) {
   const conditions = ['project_id = $1'];
   const values = [projectId];
@@ -54,7 +50,6 @@ async function getTaskById(taskId) {
   return result.rows[0] || null;
 }
 
-// PUT /api/tasks/:taskId — only updates fields that were actually provided.
 async function updateTask(taskId, updates) {
   const fields = [];
   const values = [];

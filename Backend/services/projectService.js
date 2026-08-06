@@ -1,10 +1,5 @@
-// Business logic for projects: creating them, listing a user's workspaces
-// with progress %, fetching a single project, and inviting members.
-
 const { query, pool } = require('../db/index');
 
-// POST /api/projects — wrapped in a transaction so a project is never
-// created without its owner also being added as an admin member.
 async function createProject({ name, description, ownerId }) {
   const client = await pool.connect();
 
@@ -35,8 +30,6 @@ async function createProject({ name, description, ownerId }) {
   }
 }
 
-// GET /api/projects — every project the user is a member of, plus a
-// completion percentage computed in SQL (done tasks / total tasks).
 async function getProjectsForUser(userId) {
   const result = await query(
     `SELECT
@@ -71,7 +64,7 @@ async function getProjectById(projectId) {
   return result.rows[0] || null;
 }
 
-// POST /api/projects/:id/invite — add an existing user to a project.
+
 async function inviteMember({ projectId, invitedUserId, role = 'member' }) {
   const result = await query(
     `INSERT INTO project_members (project_id, user_id, role)
@@ -81,7 +74,7 @@ async function inviteMember({ projectId, invitedUserId, role = 'member' }) {
     [projectId, invitedUserId, role]
   );
 
-  return result.rows[0] || null; // null means the user was already a member
+  return result.rows[0] || null; 
 }
 
 async function findUserByEmail(email) {
