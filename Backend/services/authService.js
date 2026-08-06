@@ -1,7 +1,3 @@
-// Business logic for registering and logging in users.
-// Controllers call these functions; they never touch the database,
-// bcrypt, or jsonwebtoken directly.
-
 const { query } = require('../db/index');
 const { hashPassword, comparePassword } = require('../utils/password');
 const { signToken } = require('../utils/jwt');
