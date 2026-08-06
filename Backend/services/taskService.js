@@ -24,13 +24,13 @@ async function getTasksForProject(projectId, filters = {}) {
     conditions.push(`(title ILIKE $${values.length} OR description ILIKE $${values.length})`);
   }
 
-  const query = `
+  const sql = `
     SELECT * FROM tasks
     WHERE ${conditions.join(' AND ')}
     ORDER BY created_at DESC
   `;
 
-  const result = await query(query, values);
+  const result = await query(sql, values);
   return result.rows;
 }
 
@@ -73,8 +73,8 @@ async function updateTask(taskId, updates) {
   }
 
   values.push(taskId);
-  const query = `UPDATE tasks SET ${fields.join(', ')} WHERE id = $${values.length} RETURNING *`;
-  const result = await query(query, values);
+  const sql = `UPDATE tasks SET ${fields.join(', ')} WHERE id = $${values.length} RETURNING *`;
+  const result = await query(sql, values);
   return result.rows[0];
 }
 
