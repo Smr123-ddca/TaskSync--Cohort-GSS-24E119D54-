@@ -1,0 +1,41 @@
+# AI Usage Log — TaskSync
+
+This document transparently describes how AI (Claude, by Anthropic) was used during the development of TaskSync, in what capacity, and what remained my own work. It's included for mentor review as part of the capstone documentation.
+
+## Why I used AI
+
+I'm new to React and hadn't built a real full-stack project before this. I understand code well when it's in front of me, but I struggle to generate structure and syntax from a blank page, especially under a tight deadline. I used Claude as a hands-on pairing partner and instructor — not as a way to skip understanding the code, but to accelerate getting unstuck and to have concepts explained in the context of my actual codebase rather than generic tutorials.
+
+## How AI was used, by category
+
+### 1. Code generation
+Claude wrote portions of the backend (Express routes, controllers, services, middleware) and scaffolded the JWT auth layer, based on requirements I described. I reviewed, ran, and tested this code rather than pasting it blindly.
+
+### 2. Debugging
+- **Variable shadowing bug** in `Backend/services/taskService.js` — a local `const query` (SQL string) was shadowing the imported `query` function in `getTasksForProject` and `updateTask`, causing a `TypeError` at runtime. Claude helped identify the root cause and I applied the fix (renaming the local variable to `sql`).
+- **Environment configuration review** — Claude flagged that `.env` had `PGDATABASE=postgres` instead of `tasksync`, a silent misconfiguration that wouldn't error but would connect to the wrong database.
+
+### 3. Concept explanations
+I asked Claude to walk through code line-by-line to build actual understanding rather than just get things working, for example:
+- How the JWT auth layer works end-to-end: signing tokens, HttpOnly cookies, `verifyToken`'s throw-on-failure behavior, and how `requireAuth` middleware ties into it.
+- Why database queries use two arguments — `query(text, params)` — and how parameterized queries prevent SQL injection versus string interpolation.
+
+### 4. Documentation
+Claude drafted the project `README.md` (setup instructions, schema summary, security notes, roadmap) and this AI usage log, based on the actual state of the codebase and our conversation history. I reviewed both for accuracy before including them.
+
+### 5. Planning
+Early in the project, Claude helped turn my feature ideas (task metadata, search & filter, task detail modal) into a documented technical spec — covering database schema, API contract, and a phased build order — which became the working roadmap for the project.
+
+## What was not AI-generated
+
+- The overall feature scope and product decisions (what TaskSync does and why) were mine.
+- The visual design direction (pastel/pixel-art aesthetic, color palette, font choices) was my own creative decision.
+- All code was reviewed and run by me before being considered "done" — nothing was merged without my understanding what it does.
+
+## My take on using AI this way
+
+Using Claude as a pairing partner let me move fast enough to hit a one-day deadline while still walking away actually understanding the auth flow, the SQL injection risk, and common JS pitfalls like variable shadowing — things I wouldn't have picked up from just copying code. The tradeoff I'm aware of: my instinct for writing React from scratch is still weak, so that's an area I know I need more independent practice on beyond this project.
+
+## Tools
+
+- **Claude (Anthropic)** — used via the Claude.ai chat interface for code generation, debugging support, concept explanations, and documentation drafting throughout the project.

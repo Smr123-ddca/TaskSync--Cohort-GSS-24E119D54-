@@ -33,13 +33,7 @@ async function createProject({ name, description, ownerId }) {
 async function getProjectsForUser(userId) {
   const result = await query(
     `SELECT
-       p.id,
-       p.name,
-       p.description,
-       p.owner_id,
-       p.created_at,
-       pm.role,
-       COUNT(t.id) AS total_tasks,
+       p.id,p.name,p.description,p.owner_id,p.created_at,pm.role,COUNT(t.id) AS total_tasks,
        COUNT(t.id) FILTER (WHERE t.status = 'done') AS done_tasks,
        CASE
          WHEN COUNT(t.id) = 0 THEN 0
